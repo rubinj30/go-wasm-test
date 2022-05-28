@@ -14,13 +14,34 @@
 		<script>
 			const go = new Go();
 			WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then((result) => {
+				console.log("result", result.instance)
 				go.run(result.instance);
 			});
+
+			fetch('https://pokeapi.co/api/v2/pokemon')
+    			.then(res=> res.json())
+				.then(data => {
+					const sortedData = data.results.sort(function(a, b) {
+						if (a.name < b.name) {
+							return -1;
+						}
+						if (a.name > b.name) {
+							return 1;
+						}
+
+						// names must be equal
+						return 0;
+					});
+					console.log("sortedData", sortedData);
+				})
 		</script>
 	</head>
 
 	<body>
 		<div class="clock" id="clock"></div>
+		<div class="block rotated-0" id="block"></div>
+		<div class="word" id="word">word</div>
+		<button class="trigger" id="trigger">Click to turn</button>
 	</body>
 
 </html>

@@ -517,6 +517,8 @@
 				global,
 				this,
 			];
+
+			console.log("Go started", this._values);
 			this._goRefCounts = new Array(this._values.length).fill(Infinity); // number of references that Go has to a JS value, indexed by reference id
 			this._ids = new Map([ // mapping from JS values to reference ids
 				[0, 1],

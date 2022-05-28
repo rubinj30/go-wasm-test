@@ -15,7 +15,7 @@ var (
 
 func main() {
 	flag.Parse()
-	log.Printf("Server.go listening on %q...", *listen)
+	log.Printf("Server.go listening on http://localhost" + *listen)
 	err := http.ListenAndServe(*listen, http.FileServer(http.Dir(*dir)))
 	log.Fatalln(err)
 }

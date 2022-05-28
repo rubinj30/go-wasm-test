@@ -1,6 +1,11 @@
 html, body {
 	font-family: Verdana, Geneva, sans-serif;
 	overflow: visible;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	justify-content: space-around;
+	height: 90%;
 
         /* prevent selection of text, images, or other things */
         -webkit-user-select: none;
@@ -9,15 +14,52 @@ html, body {
         -o-user-select: none;
         user-select: none;
 }
-
 div.clock {
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 48px;
 	color: brown;
-	/* center vertically */
-	position: absolute;
-	top: calc(50% - 24px);
+
 	/* center horizontally */
 	width: calc(100% - 10px);
 	text-align: center;
+}
+div.block {
+	width: 400px;
+	height: 400px; 
+	background-color: darkslategray;
+	box-shadow: 1 1 1 1px black;
+	border-radius: 20px;
+	-webkit-transition: 1s ease-in-out;
+    -moz-transition: 1s ease-in-out;
+    -o-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+}
+div.word {
+	width: 200px;
+	height: 200px; 
+	background-color: blue;
+	box-shadow: 1 1 1 1px lightgrey;
+}
+.rotated-1 {
+    transform: rotate(60grad);
+}
+.rotated-2 {
+    transform: rotate(120grad);
+}
+.rotated-3 {
+    transform: rotate(180grad) scale(2);
+}
+.rotated-4 {
+    transform: rotate(240grad);
+}
+.rotated-5 {
+    transform: rotate(300grad);
+	-webkit-transform: translate(3em,0);
+    -moz-transform: translate(3em,0);
+    -o-transform: translate(3em,0);
+    -ms-transform: translate(3em,0);
+    transform: translate(3em,0);
+}
+button.trigger {
+	width: 200px;
 }
