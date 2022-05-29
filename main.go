@@ -12,28 +12,22 @@ import (
 	"syscall/js"
 )
 
-const api_url = "https://pokeapi.co/api/v2/pokemon"
-
 func update_time(this js.Value, args []js.Value) interface{} {
 	// Get the current date in this locale
 	// It's done like this in JavaScript:
 	//	date = new Date()
 	//	s = date.toLocaleTimeString()
-
 	date := js.Global().Get("Date").New()
 	s := date.Call("toLocaleTimeString").String()
 
 	// update the text in <div id="clock">
 	// It's done like this in JavaScript:
 	//	document.getElementById("clock").textContent = s
-
 	js.Global().Get("document").Call("getElementById", "clock").Set("textContent", s)
 	return nil
 }
 
 func turn_block(this js.Value, args []js.Value) interface{} {
-	// update the text in <div id="clock">
-	// It's done like this in JavaScript:
 	block := js.Global().Get("document").Call("getElementById", "block")
 	class_names := block.Get("className")
 	js.Global().Get("document").Call("getElementById", "word").Set("innerText", class_names)
@@ -47,20 +41,38 @@ func turn_block(this js.Value, args []js.Value) interface{} {
 		log.Print("CLASSNAME", new_class_names, new_last_char)
 		block.Set("className", new_class_names)
 	}
-	// last_character := js.Value(class_names)[len(js.Value(class_names))-3:]
-	// if last_character == "2" {
-	// 	js.Value(class_names)[len(js.Value(class_names))-1:] = "1"
-	// } else {
-	// 	js.Value(class_names)[len(js.Value(class_names))-1:] = "2"
-	// }
-	// block.Set("className", js.Value(js.Value(class_names)))
 	return nil
 }
 
-func set_handle_click() interface{} {
-	log.Print("Setting handle click")
-	trigger := js.Global().Get("document").Call("getElementById", "trigger")
+// Could re-use this and add function and element ID value params
+func set_handle_clicks() interface{} {
+	document := js.Global().Get("document")
+
+	// Create JavaScript callback connected to turn_block()
+	trigger := document.Call("getElementById", "trigger")
 	trigger.Call("addEventListener", "click", js.FuncOf(turn_block))
+
+	// // Create JavaScript callback connected to add_dot()
+	add_dot_button := document.Call("getElementById", "add_dot")
+	add_dot_button.Call("addEventListener", "click", js.FuncOf(add_dot))
+	return nil
+}
+
+func add_dot(this js.Value, args []js.Value) interface{} {
+
+	document := js.Global().Get("document")
+	parentDiv := document.Call("getElementById", "block")
+	nodeList := document.Call("querySelectorAll", ".new_child")
+
+	if nodeList.Length() == 12 {
+		parentDiv.Set("innerHTML", "")
+	} else {
+		newDiv := document.Call("createElement", "div")
+		newDiv.Set("className", "new_child")
+
+		blockDiv := document.Call("getElementById", "block")
+		blockDiv.Call("appendChild", newDiv)
+	}
 	return nil
 }
 
@@ -70,17 +82,11 @@ func main() {
 	//	setInterval(update_time,200)
 
 	// Create JavaScript callback connected to update_time()
-
-	println("calling get_pokemon")
 	timer_cb := js.FuncOf(update_time)
-	// turn_cb := js.FuncOf(turn_block)
 
 	// Set timer to call timer_cb() every 200 ms.
-
 	js.Global().Call("setInterval", timer_cb, "200")
-	// js.Global().Call("setInterval", turn_cb, "200")
-	set_handle_click()
-
+	set_handle_clicks()
 	// An empty select blocks, so the main() function will never exit.
 	// This allows the event handler callbacks to continue operating.
 	select {}
