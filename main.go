@@ -38,9 +38,29 @@ func turn_block(this js.Value, args []js.Value) interface{} {
 		new_last_char := string(rune(last_character[0]) + 1)
 		first_part_of_class_names := class_names.String()[:len(class_names.String())-1]
 		new_class_names := first_part_of_class_names + new_last_char
-		log.Print("CLASSNAME", new_class_names, new_last_char)
 		block.Set("className", new_class_names)
 	}
+	return nil
+}
+
+func set_handle_esc_press() interface{} {
+	log.Print("setting esc handler")
+	window := js.Global().Get("window")
+	document := js.Global().Get("document")
+	window.Call("addEventListener", "keydown", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+
+		e := args[0]
+		e.Call("preventDefault")
+
+		is_escape_key := js.Global().Get("event").Get("key").String() == "Escape"
+		log.Print(is_escape_key)
+
+		if is_escape_key {
+
+			document.Call("getElementById", "block").Set("className", "block rotated-0")
+		}
+		return nil
+	}))
 	return nil
 }
 
@@ -52,7 +72,7 @@ func set_handle_clicks() interface{} {
 	trigger := document.Call("getElementById", "trigger")
 	trigger.Call("addEventListener", "click", js.FuncOf(turn_block))
 
-	// // Create JavaScript callback connected to add_dot()
+	// Create JavaScript callback connected to add_dot()
 	add_dot_button := document.Call("getElementById", "add_dot")
 	add_dot_button.Call("addEventListener", "click", js.FuncOf(add_dot))
 	return nil
@@ -64,7 +84,7 @@ func add_dot(this js.Value, args []js.Value) interface{} {
 	parentDiv := document.Call("getElementById", "block")
 	nodeList := document.Call("querySelectorAll", ".new_child")
 
-	if nodeList.Length() == 12 {
+	if nodeList.Length() == 6 {
 		parentDiv.Set("innerHTML", "")
 	} else {
 		newDiv := document.Call("createElement", "div")
@@ -87,6 +107,7 @@ func main() {
 	// Set timer to call timer_cb() every 200 ms.
 	js.Global().Call("setInterval", timer_cb, "200")
 	set_handle_clicks()
+	set_handle_esc_press()
 	// An empty select blocks, so the main() function will never exit.
 	// This allows the event handler callbacks to continue operating.
 	select {}
@@ -103,7 +124,7 @@ func main() {
 ///////
 ///////
 ///////
-func get_pokemon() {
+func get_pokemon() interface{} {
 	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon")
 	if err != nil {
 		log.Fatalln(err)
@@ -114,12 +135,25 @@ func get_pokemon() {
 		log.Fatalln(err)
 	}
 
-	// json.NewDecoder(body)
-	// log.Println(fmt.Sprintf("%q\n", body))
 	var data interface{} // TopTracks
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		panic(err.Error())
 	}
 	fmt.Println(data)
+	return data
+}
+
+func sort_items() interface{} {
+	get_pokemon()
+	// err := json.Unmarshal(body, &data)
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+	// fmt.Println(data)
+	return nil
+}
+
+func count_number_of_sorts() interface{} {
+	return nil
 }

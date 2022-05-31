@@ -1,48 +1,106 @@
 <html>
-	<head>
-		<meta charset="utf-8">
 
-		<title>Go WebAssembly</title>
+<head>
+	<meta charset="utf-8">
 
-		<meta name="description=" content="Digital Clock in WebAssembly, Go Programming Language">
+	<title>Go WebAssembly</title>
 
-		<!-- CSS for this page -->
-		<link rel="stylesheet" href="styles.css">
+	<meta name="description=" content="Digital Clock in WebAssembly, Go Programming Language">
 
-		<!-- Javascript glue code -->
-		<script src="wasm_exec.js"></script>
-		<script>
-			const go = new Go();
-			WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then((result) => {
-				console.log("result", result.instance)
-				go.run(result.instance);
-			});
+	<!-- CSS for this page -->
+	<link rel="stylesheet" href="styles.css">
 
-			fetch('https://pokeapi.co/api/v2/pokemon')
-    			.then(res=> res.json())
-				.then(data => {
-					const sortedData = data.results.sort(function(a, b) {
-						if (a.name < b.name) {
-							return -1;
-						}
-						if (a.name > b.name) {
-							return 1;
-						}
+	<!-- Javascript glue code -->
+	<script src="wasm_exec.js"></script>
+</head>
 
-						// names must be equal
-						return 0;
-					});
-					console.log("sortedData", sortedData);
-				})
-		</script>
-	</head>
-
-	<body>
+<body>
+	<div class="top">
+		<div class="playground-buttons-container">
+			<button class="trigger playground-button" id="trigger">Click to turn</button>
+			<button class="add_dot playground-button" id="add_dot">Click to add dot</button>
+		</div>
 		<div class="clock" id="clock"></div>
+	</div>
+	<div class="content">
 		<div class="block rotated-0" id="block"></div>
+		<br />
 		<div class="word" id="word">word</div>
-		<button class="trigger" id="trigger">Click to turn</button>
-		<button class="add_dot" id="add_dot">Click to add dot</button>
-	</body>
+		<div class="jsFetchStatus" id="jsFetchStatus">test</div>
+	</div>
+</body>
+
+<script>
+	const go = new Go();
+	WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then((result) => {
+		console.log("result", result.instance)
+		go.run(result.instance);
+	});
+
+	getPokemon();
+
+	async function getPokemon() {
+		let numberOfTimesSorted = 0;
+		const jsFetchStatus = document.getElementById('jsFetchStatus')
+
+
+		jsFetchStatus.innerText = 'Fetching Pokemon...'
+		const data = await fetch('https://pokeapi.co/api/v2/pokemon')
+		const { results } = await data.json()
+		console.log({ results })
+		let duplicatedPokemon3 = [...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results, ...results]
+
+		console.log(duplicatedPokemon3.length)
+
+		console.log("Sorting 1")
+		jsFetchStatus.innerText = 'Sorting pokemon...' + duplicatedPokemon.length
+		const nameSortedPokemon = await sortPokemon(duplicatedPokemon3, 'name')
+		numberOfTimesSorted++
+
+		console.log("Sorting 2")
+		jsFetchStatus.innerText = '2nd Sorting pokemon ...'
+		const urlSortedPokemon = await sortPokemon(duplicatedPokemon3, 'url')
+		numberOfTimesSorted++
+
+		console.log("Sorting 3")
+		jsFetchStatus.innerText = '3rd Sorting pokemon ...'
+		const nameSortedPokemon2 = await sortPokemon(duplicatedPokemon3, 'name')
+		numberOfTimesSorted++
+
+		console.log("Sorting 4")
+		jsFetchStatus.innerText = '4th Sorting pokemon ...'
+		const urlSortedPokemon2 = await sortPokemon(duplicatedPokemon3, 'url')
+		numberOfTimesSorted++
+
+		console.log("Sorting 5")
+		jsFetchStatus.innerText = '5th Sorting pokemon ...'
+		const nameSortedPokemon3 = await sortPokemon(duplicatedPokemon3, 'name')
+		numberOfTimesSorted++
+
+
+		console.log("Sorting 6")
+		jsFetchStatus.innerText = '6th Sorting pokemon ...'
+		const urlSortedPokemon3 = await sortPokemon(duplicatedPokemon3, 'url')
+		numberOfTimesSorted++
+
+		console.log('numberOfTimesSorted', numberOfTimesSorted)
+
+		// return pokemon
+	}
+
+	function sortPokemon(pokemon, sortField) {
+		return pokemon.sort(function (a, b) {
+			if (a['sortField'] < b['sortField']) {
+				return -1;
+			}
+			if (a.name > b.name) {
+				return 1;
+			}
+			return 0;
+		});
+	}
+
+
+</script>
 
 </html>
