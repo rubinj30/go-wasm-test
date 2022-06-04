@@ -8,7 +8,6 @@
   --color-black-2: #222;
   --color-black-3: #444;
 }
-
 html, body {
 	font-family: Verdana, Geneva, sans-serif;
 	overflow: visible;
@@ -23,7 +22,6 @@ html, body {
         -o-user-select: none;
         user-select: none;
 }
-
 .top {
 	display: flex;
 	justify-content: space-between;
@@ -104,11 +102,10 @@ div.new_child {
 	margin: 15px;
 }
 div.jsFetchStatus {
-	width: 200px;
+	margin-top: 50px;
+	color: var(--color-black-1);
+	min-width: 250px;
 	padding: 10px;
 	height: 30px;
-	background-color: var(--color-black-3);
-	opacity: .5;
 	z-index: 2;
-	border-radius: 10px;
 }
