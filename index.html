@@ -10,6 +10,8 @@
 	<!-- CSS for this page -->
 	<link rel="stylesheet" href="styles.css">
 
+	<!-- Partytown script to run JS in web worker -->
+
 	<!-- Javascript glue code -->
 	<script src="wasm_exec.js"></script>
 </head>
@@ -30,9 +32,16 @@
 	</div>
 </body>
 
+<script>
+	if (typeof (w) == "undefined") {
+		w = new Worker("jsSortingScript.js");
+	}
+</script>
+
+
 
 <script>
-	getPokemon();
+	// getPokemon();
 
 	async function sortLoop(arr, count) {
 		while (count < 7) {
@@ -50,6 +59,7 @@
 
 	async function getPokemon() {
 
+		console.log("RUNNING GET POKEMON IN JavaScript!!")
 		let numberOfTimesSorted = 0;
 		const jsFetchStatus = document.getElementById('jsFetchStatus')
 
@@ -76,9 +86,6 @@
 		jsFetchStatus.innerText = totalSortingTimeMessage
 
 	}
-
-
-
 
 	function sortPokemon(pokemon) {
 		return pokemon.sort(function (a, b) {

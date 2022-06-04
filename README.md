@@ -1,4 +1,4 @@
-## Messing around with WebAssembly and Go
+## Messing around with WebAssembly, Go, and Web Workers (and maybe Partytown)
 
 Followed [this](https://github.com/Yaoir/ClockExample-Go-WebAssembly) as a starting point and then have veered off from there.
 
@@ -15,6 +15,8 @@ go run server.go
 ```
 
 ### Future ideas
-- Figure out how to compare JS vs. Go sorting of a large number of items, and display the progress in the browser with WASM manipulated elements
-- Cleanup styling
-- Use web worker to run JS sorting so it doesn't block main thread
+[ ] Figure out how to compare JS vs. Go sorting of a large number of items, and display the progress in the browser with WASM manipulated element with a progress bar or something
+[ ] Cleanup styling and code
+[ ] Use web worker to run JS sorting so it doesn't block main thread
+    [x] setup a basic worker running JS script
+    [ ] setup Partytown and test out JS script running in there
